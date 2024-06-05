@@ -1,7 +1,20 @@
 import express from "express"
 import config  from "config"
+import { connect } from "./utils/connect"
+import  * as dotenv from "dotenv"
+import log from "./utils/logger"
+import authRoutes from "./routes/auth.routes"
 const app=express()
+
 const port =config.get<number>("port")
+app.use("/v1/api/auth",authRoutes)
 
+app.listen(port,async ()=>{
 
-app.listen(port,()=>{console.log(`the server is running on port  ${port}`)})
+    log.info(`the server is running on port  ${port}`)
+    await connect()
+    
+    
+}
+)
+    
