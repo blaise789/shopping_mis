@@ -2,6 +2,9 @@ import { Request,Response } from "express";
 import { CreateUserInput} from "../schemas/user.schema";
 import { createUser } from "../services/user.service";
 import log from "../utils/logger";
+import { omit } from "lodash";
+import UserModel from "../models/user.model";
+import { userInfo } from "os";
 export const createUserHandler=async (req:Request<{}, {}, CreateUserInput["body"]>,res:Response)=>{
     try{
         console.log(req.body)
@@ -13,5 +16,16 @@ export const createUserHandler=async (req:Request<{}, {}, CreateUserInput["body"
        return res.status(409).json({error:err.message})
 
     }
+
+}
+export async function validatePassword({email,password}:{email:string,password:string}){
+    
+        const user=await UserModel.findOne({email})
+        if(!user){
+            return false
+        }
+        const isValid= user.comparePassword(password)
+        if(!isValid) return false
+        return omit(user.toJSON(),'password')
 
 }

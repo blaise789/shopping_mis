@@ -8,13 +8,9 @@ const port =config.get<number>("port")
 app.use(express.json())
 app.use("/v1/api/auth",authRoutes)
 
-
 app.listen(port,async ()=>{
-
     log.info(`the server is running on port  ${port}`)
     await connect()
-
-    
 }
 )
     

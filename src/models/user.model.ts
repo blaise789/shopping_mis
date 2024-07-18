@@ -5,7 +5,10 @@ export interface UserInput{
     name:string,
     password:string
 }
-export interface UserDocument extends UserInput,mongoose.Document{
+export interface UserDocument extends mongoose.Document{
+    email:string
+    name:string
+    password: string
     createdAt:Date
     updatedAt:Date
     comparePassword(candidatePassword:string):Promise<Boolean>
