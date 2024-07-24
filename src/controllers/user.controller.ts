@@ -4,7 +4,6 @@ import { createUser } from "../services/user.service";
 import log from "../utils/logger";
 import { omit } from "lodash";
 import UserModel from "../models/user.model";
-import { userInfo } from "os";
 export const createUserHandler=async (req:Request<{}, {}, CreateUserInput["body"]>,res:Response)=>{
     try{
         console.log(req.body)
