@@ -1,6 +1,9 @@
 import config from "config"
-import jwt from "jsonwebtoken"
-import { object } from "zod"
+
+import jwt, { JwtPayload } from "jsonwebtoken"
+import { findUser } from "../services/user.service"
+import SessionModel from "../models/session.model"
+import { get } from "lodash"
 const privateKey=config.get<string>("privateKey")
 const publicKey=config.get<string>("publicKey")
  export function signJwt(object:Object,options?:jwt.SignOptions | undefined){
@@ -25,4 +28,20 @@ export function verifyJwt(token:string){
   }
     }
 
+}
+
+export async function reIssueAccessToken({refreshToken}:{refreshToken:string}){
+  const {decoded}=verifyJwt( refreshToken)  
+  console.log(decoded)
+  if(!decoded ||!get(decoded,"_id")) return false
+const session=await SessionModel.findById(get(decoded,"_id"))
+console.log(session)
+  if(!session || !session.valid) return false
+  const user=await findUser({_id:session.user})
+  if(!user) return false
+  const accessToken=signJwt({
+      ...user,session:session._id
+  },{expiresIn:config.get("accessTokenTtl")})
+  return accessToken
+  
 }
