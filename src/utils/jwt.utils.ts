@@ -32,10 +32,8 @@ export function verifyJwt(token:string){
 
 export async function reIssueAccessToken({refreshToken}:{refreshToken:string}){
   const {decoded}=verifyJwt( refreshToken)  
-  console.log(decoded)
   if(!decoded ||!get(decoded,"_id")) return false
 const session=await SessionModel.findById(get(decoded,"_id"))
-console.log(session)
   if(!session || !session.valid) return false
   const user=await findUser({_id:session.user})
   if(!user) return false

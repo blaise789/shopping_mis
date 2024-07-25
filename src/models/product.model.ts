@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { UserDocument } from "./user.model";
-import { customAlphabet } from "nanoid";
 
 export interface ProductDocument extends mongoose.Document{
     user:UserDocument["_id"]
@@ -18,17 +17,16 @@ export interface CreateProductInput{
     title:string,
     description:string
     price: number
-    image:string
 
 }
-const nanoid=customAlphabet("abcdefghijklmnopqrstuvwxyz123456789")
+// const nanoid=customAlphabet("abcdefghijklmnopqrstuvwxyz123456789")
 const productSchema=new mongoose.Schema({
-    productId:{type:String,required:true,unique:true,default:`product_${nanoid()}`},
+    productId:{type:String,required:true,unique:true,default:`product_abcdefghijklmnopqrstuvwxyz123456789`},
     user:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
     title:{type:String,required:true},
     description:{type:String,required:true},
     price:{type:Number,required:true},
-    image:{type:String,required:true}
+    image:{type:String,}
 
 
 },{

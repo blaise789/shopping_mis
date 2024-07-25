@@ -14,9 +14,7 @@ const payload={
             required_error:"price is required"
             
         }),
-        image:string({
-            required_error:"image is required"
-        })
+        
 
     })
 }
